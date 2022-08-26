@@ -1,0 +1,67 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        ghc-version: ["{{ ghc_version }}"]
+
+{% raw %}
+    name: Build on ${{ matrix.os }} with GHC-${{ matrix.ghc-version }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        id: setup-python
+        with:
+          python-version-file: .python-version
+          cache: 'pip'
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Setup Python dependencies
+        run: pip install -r requirements-dev.txt
+        shell: pwsh
+
+      - name: Add BumpVer environment variables
+        run: bumpver show --no-fetch --env | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Test with BumpVer
+        run: bumpver update --dry --no-fetch
+        shell: pwsh
+
+      - name: Setup Haskell
+        uses: haskell/actions/setup@v2
+        id: setup-haskell
+        with:
+          ghc-version: ${{ inputs.ghc-version }}
+          cabal-version: ${{ inputs.cabal-version }}
+
+      - name: Freeze Haskell dependencies
+        run: |
+          cabal v2-update
+          cabal v2-freeze $CABAL_ARGS
+
+      - name: Cache Haskell dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ steps.setup-haskell.outputs.cabal-store }}
+            dist-newstyle
+          key: haskell-${{ runner.os }}-${{ inputs.ghc-version }}-${{ hashFiles(cabal.project.freeze) }}
+          restore-keys: haskell-${{ runner.os }}-${{ inputs.ghc-version }}-
+
+      - name: Build
+        run: cabal v2-build
+
+      - name: Test
+        run: cabal v2-test
+{% endraw %}

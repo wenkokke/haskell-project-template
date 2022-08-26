@@ -1,0 +1,14 @@
+[bumpver]
+current_version = "{{ version or '0.0.1' }}"
+version_pattern = "{{ version_pattern or 'MAJOR.MINOR.PATCH' }}"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[bumpver.file_patterns]
+"bumpver.toml" = ['^current_version = "{version}"$']
+"{{ project }}.cabal" = [
+  '^version:     {pep440_version}',
+  '^copyright:   © {{ year }}-YYYY {{ author_name }}$',
+]

@@ -1,0 +1,36 @@
+cabal-version: 3.0
+
+name:        {{ project }}
+version:     {{ version }}
+description: Please see the README on GitHub at <https://github.com/{{ github_user }}/{{ github_repo }}#readme>
+homepage:    https://github.com/{{ github_user }}/{{ github_repo }}#readme
+bug-reports: https://github.com/{{ github_user }}/{{ github_repo }}/issues
+author:      {{ author_name }}
+maintainer:  {{ author_email }}}
+copyright:   © {{ year }}-{{ year }} {{ author_name }}
+license:     {{ license }}
+build-type:  Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+tested-with:
+    GHC == {{ ghc_version }}
+
+source-repository head
+  type: git
+  location: https://github.com/{{ github_user }}/{{ github_repo }}
+
+library
+  hs-source-dirs:       {{ src_dir }}
+  exposed-modules:      {{ project.capitalize() }}
+  build-depends:        base
+  ghc-options:          -Wall
+  default-language:     Haskell2010
+
+test
+  type:                 exitcode-stdio-1.0
+  main-is:              Spec.hs
+  hs-source-dirs:       {{ test_dir }}
+  build-depends:        base
+  ghc-options:          -Wall
+  default-language:     Haskell2010
