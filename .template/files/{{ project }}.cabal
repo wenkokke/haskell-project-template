@@ -2,9 +2,9 @@ cabal-version: 3.0
 
 name:        {{ project }}
 version:     {{ version }}
-description: Please see the README on GitHub at <https://github.com/{{ github_user }}/{{ github_repo }}#readme>
-homepage:    https://github.com/{{ github_user }}/{{ github_repo }}#readme
-bug-reports: https://github.com/{{ github_user }}/{{ github_repo }}/issues
+description: Please see the README on GitHub at <https://github.com/{{ github_username }}/{{ github_repository }}#readme>
+homepage:    https://github.com/{{ github_username }}/{{ github_repository }}#readme
+bug-reports: https://github.com/{{ github_username }}/{{ github_repository }}/issues
 author:      {{ author_name }}
 maintainer:  {{ author_email }}}
 copyright:   © {{ year }}-{{ year }} {{ author_name }}
@@ -18,10 +18,10 @@ tested-with:
 
 source-repository head
   type: git
-  location: https://github.com/{{ github_user }}/{{ github_repo }}
+  location: https://github.com/{{ github_username }}/{{ github_repository }}
 
 library
-  hs-source-dirs:       {{ src_dir }}
+  hs-source-dirs:       {{ source_directory }}
   exposed-modules:      {{ project.capitalize() }}
   build-depends:        base
   ghc-options:          -Wall
@@ -30,7 +30,7 @@ library
 test
   type:                 exitcode-stdio-1.0
   main-is:              Spec.hs
-  hs-source-dirs:       {{ test_dir }}
+  hs-source-dirs:       {{ test_directory }}
   build-depends:        base
   ghc-options:          -Wall
   default-language:     Haskell2010
