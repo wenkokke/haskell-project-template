@@ -16,6 +16,26 @@ template_dir: pathlib.Path = pathlib.Path(__file__).parent
 template_files_dir: pathlib.Path = template_dir / "files"
 
 
+def get_used_variables(
+    template_files_dir: pathlib.Path,
+) -> Iterator[tuple[pathlib.Path, str]]:
+    """
+    Get all variables used in the template directory.
+    """
+    env = jinja2.Environment()
+    for template_path in template_files_dir.glob("**/*"):
+        if not template_path.samefile(__file__):
+            output_path_template = str(template_path.relative_to(template_files_dir))
+            output_path_ast = env.parse(source=output_path_template)
+            for variable_name in jinja2.meta.find_undeclared_variables(output_path_ast):
+                yield (template_path, variable_name)
+            if not template_path.is_dir():
+                output_template = template_path.read_text()
+                output_ast = env.parse(output_template)
+                for variable_name in jinja2.meta.find_undeclared_variables(output_ast):
+                    yield (template_path, variable_name)
+
+
 @dataclass
 class DefaultSpec(DataClassJsonMixin):
     shell: str
@@ -64,15 +84,6 @@ class VariableSpec(DataClassJsonMixin):
             self.default = subprocess.getoutput(self.default.shell)
         return self.default
 
-    @staticmethod
-    def load(variables_yaml_path: pathlib.Path) -> dict[str, "VariableSpec"]:
-        variables_yaml = yaml.safe_load(variables_yaml_path.read_text())
-        variable_specs = {}
-        for variable_info in variables_yaml["variables"]:
-            variable_spec = VariableSpec.from_dict(variable_info)
-            variable_specs[variable_spec.name] = variable_spec
-        return variable_specs
-
     def option(self) -> Callable[[FC], FC]:
         if self.has_default:
             return click.option(
@@ -81,68 +92,41 @@ class VariableSpec(DataClassJsonMixin):
         else:
             return click.option(f"--{self.name}", prompt=self.prompt)
 
-    @staticmethod
-    def get_used_variables(
-        template_files_dir: pathlib.Path,
-    ) -> Iterator[tuple[pathlib.Path, str]]:
-        """
-        Get all variables used in the template directory.
-        """
-        env = jinja2.Environment()
-        for template_path in template_files_dir.glob("**/*"):
-            if not template_path.samefile(__file__):
-                output_path_template = str(
-                    template_path.relative_to(template_files_dir)
-                )
-                output_path_ast = env.parse(source=output_path_template)
-                for variable_name in jinja2.meta.find_undeclared_variables(
-                    output_path_ast
-                ):
-                    yield (template_path, variable_name)
-                if not template_path.is_dir():
-                    output_template = template_path.read_text()
-                    output_ast = env.parse(output_template)
-                    for variable_name in jinja2.meta.find_undeclared_variables(
-                        output_ast
-                    ):
-                        yield (template_path, variable_name)
 
-    @staticmethod
-    def check(
-        variable_specs: dict[str, "VariableSpec"], template_files_dir: pathlib.Path
-    ):
-        """
-        Check whether all used variables have a spec.
-        """
-        for template_path, variable_name in VariableSpec.get_used_variables(
-            template_files_dir
-        ):
-            if not variable_name in variable_specs:
-                print(f"Undefined variable 'variable_name' in '{template_path}'")
+@dataclass
+class ProjectSpec:
+    variables: list[VariableSpec] = field(default_factory=list)
 
-    @staticmethod
-    def command(variable_specs: dict[str, "VariableSpec"]) -> Callable[[FC], FC]:
+    def load(self, path: pathlib.Path):
+        contents = yaml.safe_load(path.read_text())
+        for variable_dict in contents["variables"]:
+            variable_spec = VariableSpec.from_dict(variable_dict)
+            self.variables.append(variable_spec)
+
+    def test(self, template_files_dir: pathlib.Path):
+        """
+        Test whether all used variables have a spec.
+        """
+        for template_path, variable_name in get_used_variables(template_files_dir):
+            if not any(variable_name == variable.name for variable in self.variables):
+                print(f"Undefined variable '{variable_name}' in '{template_path}'")
+
+    def command(self) -> Callable[[FC], FC]:
+        """
+        Create a click decorator for a given variable spec.
+        """
         decorator: Callable[[FC], FC] = lambda fc: fc
-        for variable_spec in variable_specs.values():
+        for variable_spec in self.variables:
             decorator = lambda fc: variable_spec.option()(decorator(fc))
         return click.command()(decorator)
 
 
-variable_specs = VariableSpec.load(template_dir / "variables.yaml")
-VariableSpec.check(variable_specs, template_files_dir)
+project_spec = ProjectSpec()
+project_spec.load(template_dir / "variables.yaml")
+project_spec.test(template_files_dir)
 
 
 # @click.command()
-# @click.option("--project", prompt="Project name", help="The project name.")
-# @click.option("--author-name", default=defaults["author_name"])
-# @click.option("--author-email", default=defaults["author_email"])
-# @click.option("--version", default=defaults["version"])
-# @click.option("--version-pattern", default=defaults["version_pattern"])
-# @click.option("--src-dir", default=defaults["src_dir"])
-# @click.option("--test-dir", default=defaults["test_dir"])
-# @click.option("--license", default=defaults["license"])
-# @click.option("--ghc-version", default=defaults["ghc_version"])
-# @click.option("--python-version", default=defaults["python_version"])
 # @click.help_option()
 # def cli(**kwargs) -> None:
 #     confirmation_dialog = "\n".join(
