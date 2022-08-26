@@ -62,13 +62,16 @@ def cli(**kwargs) -> None:
     )
     click.confirm(text=confirmation_dialog)
     template_dir = pathlib.Path(__file__).parent/"template"
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir))
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(str(template_dir)))
     for template_file in template_dir.glob("**/*"):
         template_file = template_file.relative_to(template_dir)
-        print(template_file)
         output_file = pathlib.Path(env.from_string(source=str(template_file)).render(**kwargs))
-        print(output_file)
-        output_file.write_text(env.get_template(template_file).render(**kwargs))
+        if template_file.is_dir():
+            print(f"Create directory {output_file}")
+            output_file.mkdir(parents=True, exist_ok=True)
+        else:
+            print(f"Create file {output_file}")
+            output_file.write_text(env.get_template(str(template_file)).render(**kwargs))
 
 
 if __name__ == "__main__":
