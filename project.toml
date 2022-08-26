@@ -1,8 +1,0 @@
-project="type-checker"
-version="0.0.1"
-source="src"
-test="test"
-author_name="Wen Kokke"
-author_email="wenkokke@users.noreply.github.com"
-license="MIT"
-ghc_version="9.2.2"
