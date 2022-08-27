@@ -14,7 +14,7 @@ variables:
   - name: "version_pattern"
     default: "MAJOR.MINOR.PATCH"
   - name: "license"
-    default: AllRightsReserved
+    default: NONE
   - name: "test_directory"
     default: test
   - name: "source_directory"
