@@ -1,3 +1,4 @@
+name: "metaproject-haskell"
 variables:
   - name: "project"
   - name: "github_username"
