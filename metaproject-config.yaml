@@ -1,0 +1,29 @@
+variables:
+  - name: "project"
+  - name: "github_username"
+  - name: "github_repository"
+  - name: "author_name"
+    default:
+      shell: git config --get user.name
+  - name: "author_email"
+    default:
+      shell: git config --get user.email
+  - name: "version"
+    default: "0.0.1"
+  - name: "version_pattern"
+    default: "MAJOR.MINOR.PATCH"
+  - name: "license"
+    default: AllRightsReserved
+  - name: "test_directory"
+    default: test
+  - name: "source_directory"
+    default: src
+  - name: "python_version"
+    default:
+      shell: python -c 'import platform;print(platform.python_version())'
+  - name: "ghc_version"
+    default:
+      shell: ghc --numeric-version
+  - name: "year"
+    default:
+      shell: "date +%Y"
