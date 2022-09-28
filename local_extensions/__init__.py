@@ -166,8 +166,14 @@ try:
             environment.filters["major_minor"] = self.major_minor
             environment.filters["major_minor_patch"] = self.major_minor_patch
             environment.filters[
+                "resolve_cabal_version"
+            ] = self.resolve_cabal_version
+            environment.filters[
                 "resolve_latest_cabal_version"
             ] = self.resolve_latest_cabal_version
+            environment.filters[
+                "resolve_ghc_version"
+            ] = self.resolve_ghc_version
             environment.filters[
                 "resolve_latest_ghc_version"
             ] = self.resolve_latest_ghc_version
