@@ -52,7 +52,6 @@ jobs:
 
       - name: Test project
         run: |
-          ls
           cabal v2-update
           cabal v2-test
-        working-directory: .cache
+        working-directory: .cache/haskell-boilerplate
