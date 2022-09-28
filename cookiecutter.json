@@ -1,25 +1,4 @@
 {
-  "project_name": "Haskell Boilerplate",
-  "project_slug": "{{cookiecutter.project_name | slugify}}",
-  "project_module": "{{cookiecutter.project_slug | to_pascal}}",
-  "version": "0.1.0",
-  "version_style": ["SemVer", "ComVer", "CalVer"],
-  "version_pattern": "{{cookiecutter.version_style | version_pattern}}",
-  "fullname": "{{None | resolve_fullname}}",
-  "email": "{{None | resolve_email}}",
-  "github": null,
-  "repository_slug": "{{cookiecutter.project_slug}}",
-  "use_pre_commit": "y",
-  "use_test": "y",
-  "source_directory": "src",
-  "test_directory": "tests",
-  "ghc_version_spec": ["latest", "installed"],
-  "ghc_version": "{{cookiecutter.ghc_version_spec | resolve_ghc_version}}",
-  "cabal_version_spec": ["latest", "installed"],
-  "cabal_version": "{{cookiecutter.cabal_version_spec | resolve_cabal_version}}",
-  "license": ["MIT", "PPL"],
-  "year": "{% now 'local', '%Y' %}",
-  "git_init": ["github", null],
   "__github_remote_url": "git@github.com:{{cookiecutter.github}}/{{cookiecutter.repository_slug}}.git",
   "_extensions": [
     "jinja2_time.TimeExtension",
@@ -27,5 +6,42 @@
     "local_extensions.HaskellVersionsExtension",
     "local_extensions.StrCaseExtension",
     "local_extensions.VersionExtension"
-  ]
+  ],
+  "cabal_version": "{{cookiecutter.cabal_version_spec | resolve_cabal_version}}",
+  "cabal_version_spec": [
+    "latest",
+    "installed"
+  ],
+  "email": "{{None | resolve_email}}",
+  "fullname": "{{None | resolve_fullname}}",
+  "ghc_version": "{{cookiecutter.ghc_version_spec | resolve_ghc_version}}",
+  "ghc_version_spec": [
+    "latest",
+    "installed"
+  ],
+  "git_init": [
+    "github",
+    null
+  ],
+  "github": null,
+  "license": [
+    "MIT",
+    "PPL"
+  ],
+  "project_module": "{{cookiecutter.project_slug | to_pascal}}",
+  "project_name": "Haskell Boilerplate",
+  "project_slug": "{{cookiecutter.project_name | slugify}}",
+  "repository_slug": "{{cookiecutter.project_slug}}",
+  "source_directory": "src",
+  "test_directory": "tests",
+  "use_pre_commit": "y",
+  "use_test": "y",
+  "version": "0.1.0",
+  "version_pattern": "{{cookiecutter.version_style | version_pattern}}",
+  "version_style": [
+    "SemVer",
+    "ComVer",
+    "CalVer"
+  ],
+  "year": "{% now 'local', '%Y' %}"
 }

@@ -16,9 +16,12 @@ if __name__ == "__main__":
     if "{{ cookiecutter.git_init }}" == "github":
         github_remote_url = "{{cookiecutter.__github_remote_url}}"
         subprocess.check_call(f"git init", cwd=PROJECT_ROOT, shell=True)
-        subprocess.check_call(f"git remote add origin {github_remote_url}", cwd=PROJECT_ROOT, shell=True)
+        subprocess.check_call(
+            f"git remote add origin {github_remote_url}", cwd=PROJECT_ROOT, shell=True
+        )
 
     # Run pre-commit if 'use_pre_commit' is 'y':
     if "{{ cookiecutter.use_pre_commit }}" == "y":
-        subprocess.check_call(f"pre-commit run --files ./**/*", cwd=PROJECT_ROOT, shell=True)
-
+        subprocess.check_call(
+            f"pre-commit run --files ./**/*", cwd=PROJECT_ROOT, shell=True
+        )
