@@ -19,12 +19,6 @@ jobs:
             python-version: "3.9"
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    env:
-      github: ${{ github.actor }}
-      git_init: false
-      project_slug: haskell-boilerplate
-      ghc_version: ${{ matrix.ghc-version }}
-      cabal_version: ${{ matrix.cabal-version }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -39,8 +33,13 @@ jobs:
         with:
           ghc-version: ${{ matrix.ghc-version }}
           cabal-version: ${{ matrix.cabal-version }}
-      - run: |
-          cookiecutter --no-input -o ${{ runner.temp }} .
+      - run: cookiecutter --no-input -o ${{ runner.temp }} .
+        env:
+          github: ${{ github.actor }}
+          git_init: false
+          project_slug: haskell-boilerplate
+          ghc_version: ${{ matrix.ghc-version }}
+          cabal_version: ${{ matrix.cabal-version }}
       - run: |
           cd ${{ runner.temp }}/haskell-boilerplate
           cabal v2-test
