@@ -14,5 +14,5 @@
   "test_directory": "tests",
   "license": ["MIT", "PPL"],
   "year": "{% now 'local', '%Y' %}",
-  "_extensions": ["jinja2_time.TimeExtension", "local_extensions.Haskell"]
+  "_extensions": ["jinja2_time.TimeExtension", "local_extensions.HaskellExtension"]
 }
