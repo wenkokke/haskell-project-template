@@ -11,8 +11,8 @@
   "github_repository": "{{ cookiecutter.project_slug }}",
   "source_directory": "src",
   "use_test": "y",
-  "{% if use_test != 'y' %}_{% endif %}test_directory": "tests",
+  "test_directory": "tests",
   "license": ["MIT", "PPL"],
   "year": "{% now 'local', '%Y' %}",
-  "_extensions": ["jinja2_time.TimeExtension", "local_extensions.to_pascal"]
+  "_extensions": ["jinja2_time.TimeExtension", "local_extensions.strcase"]
 }
