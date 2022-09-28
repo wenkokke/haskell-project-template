@@ -59,12 +59,12 @@ class HaskellVersionExtension:
             return self.installed_cabal_version
         elif cabal_version in self.cabal_versions:
             return cabal_version
-        elif self.is_semver(cabal_version):
+        else:
             for cabal_version_candidate in self.cabal_versions:
                 if cabal_version_candidate.startswith(f"{cabal_version}."):
                     return cabal_version_candidate
-        LOGGER.warning(f"Unknown Cabal version {cabal_version}, {self.cabal_versions}")
-        return cabal_version
+            LOGGER.warning(f"Unknown Cabal version {cabal_version}, {self.cabal_versions}")
+            return cabal_version
 
     @property
     def installed_cabal_version(self) -> str:

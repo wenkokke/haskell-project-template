@@ -20,6 +20,6 @@
   "year": "{% now 'local', '%Y' %}",
   "_extensions": [
     "jinja2_time.TimeExtension",
-    "local_extensions.HaskellExtension"
+    "local_extensions.LocalExtensions"
   ]
 }
