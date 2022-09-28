@@ -2,5 +2,7 @@ cradle:
   cabal:
     - path: "./{{cookiecutter.source_directory}}"
       component: "lib:{{cookiecutter.project_slug}}"
+{% if cookiecutter.use_test == "y" %}
     - path: "./{{cookiecutter.test_directory}}"
       component: "test:{{cookiecutter.project_slug}}-test"
+{% endif %}
