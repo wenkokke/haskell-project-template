@@ -35,7 +35,7 @@ jobs:
       - name: Create project from template
         run: |
           cookiecutter --no-input \
-            -o ${{ env.GITHUB_WORKSPACE }} \
+            -o ${{ github.workspace }} \
             . \
             project_name="Haskell Boilerplate" \
             project_slug=haskell-boilerplate \
@@ -60,4 +60,4 @@ jobs:
           cd haskell-boilerplate
           cabal v2-update
           cabal v2-test
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        working-directory: ${{ github.workspace }}
