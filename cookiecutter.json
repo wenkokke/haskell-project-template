@@ -12,14 +12,14 @@
   "use_test": "y",
   "source_directory": "src",
   "test_directory": "tests",
-  "ghc_version": "latest",
-  "cabal_version": "latest",
+  "ghc_version_spec": ["latest", "installed"],
+  "ghc_version": "{{cookiecutter.ghc_version_spec | resolve_ghc_version}}",
+  "cabal_version_spec": ["latest", "installed"],
+  "cabal_version": "{{cookiecutter.cabal_version_spec | resolve_cabal_version}}",
   "license": ["MIT", "PPL"],
   "year": "{% now 'local', '%Y' %}",
   "_extensions": [
     "jinja2_time.TimeExtension",
     "local_extensions.HaskellExtension"
-  ],
-  "__resolved_ghc_version": "{{cookiecutter.ghc_version | resolve_ghc_version}}",
-  "__resolved_cabal_version": "{{cookiecutter.cabal_version | resolve_cabal_version}}"
+  ]
 }
