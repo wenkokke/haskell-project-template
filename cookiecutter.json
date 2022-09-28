@@ -1,20 +1,25 @@
 {
   "project_name": "Haskell Boilerplate",
-  "project_slug": "{{ cookiecutter.project_name | slugify }}",
-  "project_module": "{{ cookiecutter.project_slug | to_pascal }}",
+  "project_slug": "{{cookiecutter.project_name | slugify}}",
+  "project_module": "{{cookiecutter.project_slug | to_pascal}}",
   "version": "0.1.0",
   "version_style": ["SemVer", "ComVer", "CalVer"],
-  "version_pattern": "{% if cookiecutter.version_style == 'CalVer' %}{{ 'YYYY.MM[.INC0]' }}{% elif cookiecutter.version_style == 'ComVer' %}{{ 'MAJOR.MINOR' }}{% elif cookiecutter.version_style == 'SemVer' %}{{ 'MAJOR.MINOR.PATCH' }}{% endif %}",
+  "version_pattern": "{{cookiecutter.version_style | version_pattern}}",
   "fullname": "Wen Kokke",
   "email": "wenkokke@users.noreply.github.com",
   "github_username": "wenkokke",
-  "github_repository": "{{ cookiecutter.project_slug }}",
+  "github_repository": "{{cookiecutter.project_slug}}",
   "use_test": "y",
   "source_directory": "src",
   "test_directory": "tests",
-  "ghc_version": "{{ 'latest' | resolve_latest_ghc_version }}",
-  "cabal_version": "{{ 'latest' | resolve_latest_cabal_version }}",
+  "ghc_version": "latest",
+  "_resolved_ghc_version": "{{cookiecutter.ghc_version | resolve_latest_ghc_version}}",
+  "cabal_version": "latest",
+  "_resolved_cabal_version": "{{cookiecutter.cabal_version | resolve_latest_cabal_version}}",
   "license": ["MIT", "PPL"],
   "year": "{% now 'local', '%Y' %}",
-  "_extensions": ["jinja2_time.TimeExtension", "local_extensions.HaskellExtension"]
+  "_extensions": [
+    "jinja2_time.TimeExtension",
+    "local_extensions.HaskellExtension"
+  ]
 }

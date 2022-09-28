@@ -12,6 +12,15 @@ class HaskellVersions:
     def __init__(self):
         self._versions = None
 
+    def version_pattern(self, version_style: str) -> str:
+        if version_style == "SemVer":
+            return "MAJOR.MINOR.PATCH"
+        elif version_style == "ComVer":
+            return "MAJOR.MINOR"
+        elif version_style == "CalVer":
+            return "YYYY.MM[.INC0]"
+        raise ValueError(f"Unknown version style {version_style}")
+
     REGEX_SEMVER = re.compile(
         r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
     )
@@ -27,11 +36,27 @@ class HaskellVersions:
         os.path.dirname(__file__), os.path.pardir, "versions.json"
     )
 
+    # Filters on version numbers
+
     def major_minor(self, version: str) -> str:
         return ".".join(version.split(".")[:2])
 
     def major_minor_patch(self, version: str) -> str:
         return ".".join(version.split(".")[:3])
+
+    # Cabal versions
+
+    def resolve_cabal_version(self, cabal_version: str) -> str:
+        if cabal_version == "latest":
+            return self.latest_cabal_version
+        elif cabal_version in self.cabal_versions:
+            return cabal_version
+        elif self.is_semver(cabal_version):
+            for cabal_version_candidate in self.cabal_versions:
+                if cabal_version_candidate.startswith(f"{cabal_version}."):
+                    return cabal_version_candidate
+        LOGGER.warning(f"Unknown cabal version {cabal_version}, {self.cabal_versions}")
+        return cabal_version
 
     def resolve_latest_cabal_version(self, cabal_version: str) -> str:
         if cabal_version == "latest":
@@ -49,6 +74,20 @@ class HaskellVersions:
     @property
     def cabal_versions(self):
         return self.versions["cabal"]
+
+    # GHC versions
+
+    def resolve_ghc_version(self, ghc_version: str) -> str:
+        if ghc_version == "latest":
+            return self.latest_ghc_version
+        elif ghc_version in self.ghc_versions:
+            return ghc_version
+        elif self.is_semver(ghc_version):
+            for ghc_version_candidate in self.ghc_versions:
+                if ghc_version_candidate.startswith(f"{ghc_version}."):
+                    return ghc_version_candidate
+        LOGGER.warning(f"Unknown GHC version '{ghc_version}', {self.ghc_versions}")
+        return ghc_version
 
     def resolve_latest_ghc_version(self, ghc_version: str) -> str:
         if ghc_version == "latest":
@@ -123,6 +162,7 @@ try:
         def __init__(self, environment):
             super(HaskellExtension, self).__init__(environment)
             environment.filters["to_pascal"] = self.to_pascal
+            environment.filters["version_pattern"] = self.version_pattern
             environment.filters["major_minor"] = self.major_minor
             environment.filters["major_minor_patch"] = self.major_minor_patch
             environment.filters[
