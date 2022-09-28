@@ -27,6 +27,12 @@ class HaskellVersions:
         os.path.dirname(__file__), os.path.pardir, "versions.json"
     )
 
+    def major_minor(self, version: str) -> str:
+        return ".".join(version.split(".")[:2])
+
+    def major_minor_patch(self, version: str) -> str:
+        return ".".join(version.split(".")[:3])
+
     def resolve_latest_cabal_version(self, cabal_version: str) -> str:
         if cabal_version == "latest":
             return self.latest_cabal_version
@@ -117,6 +123,8 @@ try:
         def __init__(self, environment):
             super(HaskellExtension, self).__init__(environment)
             environment.filters["to_pascal"] = self.to_pascal
+            environment.filters["major_minor"] = self.major_minor
+            environment.filters["major_minor_patch"] = self.major_minor_patch
             environment.filters[
                 "resolve_latest_cabal_version"
             ] = self.resolve_latest_cabal_version

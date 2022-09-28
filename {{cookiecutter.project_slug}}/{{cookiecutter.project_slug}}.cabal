@@ -1,5 +1,5 @@
 {% if cookiecutter.cabal_version != 'latest' %}
-cabal-version: {{cookiecutter.cabal_version}}
+cabal-version: {{cookiecutter.cabal_version | major_minor}}
 {% endif %}
 
 name:        {{cookiecutter.project_slug}}
