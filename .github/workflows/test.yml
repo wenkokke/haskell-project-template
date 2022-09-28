@@ -54,6 +54,7 @@ jobs:
 
       - name: Test project
         run: |
+          ls
           cd haskell-boilerplate
           cabal v2-update
           cabal v2-test
