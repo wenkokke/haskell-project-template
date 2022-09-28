@@ -1,7 +1,7 @@
 {
-  "project_module": "{{cookiecutter.project_slug | to_pascal}}",
   "project_name": "Haskell Boilerplate",
   "project_slug": "{{cookiecutter.project_name | slugify}}",
+  "project_module": "{{cookiecutter.project_slug | to_pascal}}",
   "fullname": "{{None | resolve_fullname}}",
   "email": "{{None | resolve_email}}",
   "github": null,
