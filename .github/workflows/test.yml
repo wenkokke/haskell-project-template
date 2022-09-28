@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          pipx cookiecutter --no-input --output-dir ${{ env.RUNNER_TEMP }} . ghc_version=${{ matrix.ghc-version }} cabal_version=${{ matrix.cabal-version }}
-          cd ${{ env.RUNNER_TEMP }}/haskell-boilerplate
-          cabal v2-test
+      - uses: haskell/actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc-version }}
+          cabal-version: ${{ matrix.cabal-version }}
+      - run: pipx cookiecutter --no-input --output-dir ${{ env.RUNNER_TEMP }} . ghc_version=${{ matrix.ghc-version }} cabal_version=${{ matrix.cabal-version }}
+      - run: cd ${{ env.RUNNER_TEMP }}/haskell-boilerplate && cabal v2-test
+      
