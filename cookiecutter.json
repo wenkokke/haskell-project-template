@@ -9,6 +9,7 @@
   "email": "{{None | resolve_email}}",
   "github": null,
   "repository_slug": "{{cookiecutter.project_slug}}",
+  "use_pre_commit": "y",
   "use_test": "y",
   "source_directory": "src",
   "test_directory": "tests",
@@ -18,6 +19,8 @@
   "cabal_version": "{{cookiecutter.cabal_version_spec | resolve_cabal_version}}",
   "license": ["MIT", "PPL"],
   "year": "{% now 'local', '%Y' %}",
+  "git_init": ["github", null],
+  "__github_remote_url": "git@github.com:{{cookiecutter.github}}/{{cookiecutter.repository_slug}}.git",
   "_extensions": [
     "jinja2_time.TimeExtension",
     "local_extensions.GitConfigExtension",
