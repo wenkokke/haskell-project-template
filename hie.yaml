@@ -1,0 +1,6 @@
+cradle:
+  cabal:
+    - path: "./{{cookiecutter.source_directory}}"
+      component: "lib:{{cookiecutter.project_slug}}"
+    - path: "./{{cookiecutter.test_directory}}"
+      component: "test:{{cookiecutter.project_slug}}-test"

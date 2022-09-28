@@ -1,0 +1,1 @@
+packages: {{cookiecutter.project_slug}}.cabal

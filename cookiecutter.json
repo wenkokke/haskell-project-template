@@ -1,0 +1,18 @@
+{
+  "project_name": "Haskell Boilerplate",
+  "project_slug": "{{ cookiecutter.project_name | slugify }}",
+  "project_module": "{{ cookiecutter.project_slug | to_pascal }}",
+  "version": "0.1.0",
+  "version_style": ["CalVer", "ComVer", "SemVer"],
+  "version_pattern": "{% if cookiecutter.version_pattern == 'CalVer' %}{{ 'YYYY.MM[.INC0]' }}{% elif cookiecutter.version_pattern == 'ComVer' %}{{ 'MAJOR.MINOR' }}{% elif cookiecutter.version_pattern == 'SemVer' %}{{ 'MAJOR.MINOR.PATCH' }}{% endif %}",
+  "author_name": "Wen Kokke",
+  "author_email": "wenkokke@users.noreply.github.com",
+  "github_username": "wenkokke",
+  "github_repository": "{{ cookiecutter.project_slug }}",
+  "source_directory": "src",
+  "use_test": "y",
+  "test_directory": "tests",
+  "license": ["MIT", "PPL"],
+  "year": "{% now 'local', '%Y' %}",
+  "_extensions": ["jinja2_time.TimeExtension", "local_extensions.to_pascal"]
+}

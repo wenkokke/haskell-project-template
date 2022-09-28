@@ -1,0 +1,40 @@
+cabal-version: 3.0
+
+name:        {{cookiecutter.project_slug}}
+version:     {{cookiecutter.version}}
+description: Please see the README on GitHub at <https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}#readme>
+homepage:    https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}#readme
+bug-reports: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
+author:      {{cookiecutter.author_name}}
+maintainer:  {{cookiecutter.author_email}}}
+copyright:   © {{cookiecutter.year}}-{{cookiecutter.year}} {{cookiecutter.author_name}}
+license:     {{cookiecutter.license}}
+build-type:  Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+tested-with:
+{% if cookiecutter.ghc_version %}
+    GHC == {{cookiecutter.ghc_version}}
+{% endif %}
+
+source-repository head
+  type: git
+  location: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
+
+library
+  hs-source-dirs:       {{cookiecutter.source_directory}}
+  exposed-modules:      {{cookiecutter.project_module}}
+  build-depends:        base
+  ghc-options:          -Wall
+  default-language:     Haskell2010
+
+{% if cookiecutter.use_test %}
+test
+  type:                 exitcode-stdio-1.0
+  main-is:              Spec.hs
+  hs-source-dirs:       {{cookiecutter.test_directory}}
+  build-depends:        base
+  ghc-options:          -Wall
+  default-language:     Haskell2010
+{% endif %}

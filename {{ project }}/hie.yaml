@@ -1,6 +1,0 @@
-cradle:
-  cabal:
-    - path: "./{{ source_directory }}"
-      component: "lib:{{ project }}"
-    - path: "./{{ test_directory }}"
-      component: "test:{{ project }}-test"
