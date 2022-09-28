@@ -13,9 +13,9 @@
   "source_directory": "src",
   "test_directory": "tests",
   "ghc_version": "latest",
-  "_resolved_ghc_version": "{{cookiecutter.ghc_version | resolve_ghc_version}}",
+  "resolved_ghc_version": "{{cookiecutter.ghc_version | resolve_ghc_version}}",
   "cabal_version": "latest",
-  "_resolved_cabal_version": "{{cookiecutter.cabal_version | resolve_cabal_version}}",
+  "resolved_cabal_version": "{{cookiecutter.cabal_version | resolve_cabal_version}}",
   "license": ["MIT", "PPL"],
   "year": "{% now 'local', '%Y' %}",
   "_extensions": [
