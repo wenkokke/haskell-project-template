@@ -63,7 +63,7 @@ class HaskellVersions:
 
     @property
     def versions(self):
-        if self._versions is None:
+        if not hasattr(self, "_versions"):
             if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
                 self._versions = self._get_versions_from_file()
             else:
@@ -116,8 +116,6 @@ try:
     class HaskellExtension(jinja2.ext.Extension, HaskellVersions, HaskellStrCase):
         def __init__(self, environment):
             super(HaskellExtension, self).__init__(environment)
-            super(HaskellVersions, self).__init__()
-            super(HaskellStrCase, self).__init__()
             environment.filters["to_pascal"] = self.to_pascal
             environment.filters[
                 "resolve_latest_cabal_version"
