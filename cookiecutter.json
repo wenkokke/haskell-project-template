@@ -10,6 +10,8 @@
   "github_username": "wenkokke",
   "github_repository": "{{ cookiecutter.project_slug }}",
   "source_directory": "src",
+  "ghc_version": "latest",
+  "cabal_version": "latest",
   "use_test": "y",
   "test_directory": "tests",
   "license": ["MIT", "PPL"],

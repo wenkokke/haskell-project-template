@@ -1,4 +1,6 @@
-cabal-version: 3.0
+{% if cookiecutter.cabal_version != 'latest' %}
+cabal-version: {{cookiecutter.cabal_version}}
+{% endif %}
 
 name:        {{cookiecutter.project_slug}}
 version:     {{cookiecutter.version}}
@@ -14,7 +16,7 @@ extra-source-files:
     README.md
     ChangeLog.md
 tested-with:
-{% if cookiecutter.ghc_version %}
+{% if cookiecutter.ghc_version != 'latest' %}
     GHC == {{cookiecutter.ghc_version}}
 {% endif %}
 
