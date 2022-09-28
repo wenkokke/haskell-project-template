@@ -24,6 +24,9 @@ jobs:
 
     name: Test on ${{ matrix.os }} with GHC ${{ matrix.ghc-version }} and Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
+    env:
+      GHC_VERSION: ${{ matrix.ghc-version }}
+      CABAL_VERSION: ${{ matrix.cabal-version }}
     steps:
       - uses: actions/checkout@v3
 
@@ -52,9 +55,6 @@ jobs:
             cabal_version="${{ env.CABAL_VERSION }}" \
             use_pre_commit=n \
             use_test=y
-        env:
-          GHC_VERSION: ${{ matrix.ghc-version }}
-          CABAL_VERSION: ${{ matrix.cabal-version }}
 
       - name: Setup Haskell
         uses: haskell/actions/setup@v2
