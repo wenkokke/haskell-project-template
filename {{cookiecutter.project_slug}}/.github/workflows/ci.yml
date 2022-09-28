@@ -8,7 +8,8 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        ghc-version: ["{{cookiecutter.ghc_version}}"]
+        ghc-version: ["{{cookiecutter.ghc_version | major_minor}}"]
+        cabal-version: ["{{cookiecutter.cabal_version | major_minor}}"]
 
     name: Build on ${{'{{ matrix.os }}'}} with GHC-${{'{{ matrix.ghc-version }}'}}
     runs-on: ${{'{{ matrix.os }}'}}
@@ -21,8 +22,8 @@ jobs:
         uses: haskell/actions/setup@v2
         id: setup-haskell
         with:
-          ghc-version: ${{'{{ inputs.ghc-version }}'}}
-          cabal-version: ${{'{{ inputs.cabal-version }}'}}
+          ghc-version: ${{'{{ matrix.ghc-version }}'}}
+          cabal-version: ${{'{{ matrix.cabal-version }}'}}
 
       - name: Freeze Haskell dependencies
         run: |
@@ -35,8 +36,8 @@ jobs:
           path: |
             ${{'{{ steps.setup-haskell.outputs.cabal-store }}'}}
             dist-newstyle
-          key: haskell-${{'{{ runner.os }}'}}-${{'{{ inputs.ghc-version }}'}}-${{'{{ hashFiles(cabal.project.freeze) }}'}}
-          restore-keys: haskell-${{'{{ runner.os }}'}}-${{'{{ inputs.ghc-version }}'}}-
+          key: haskell-${{'{{ runner.os }}'}}-${{'{{ matrix.ghc-version }}'}}-${{'{{ hashFiles(cabal.project.freeze) }}'}}
+          restore-keys: haskell-${{'{{ runner.os }}'}}-${{'{{ matrix.ghc-version }}'}}-
 
       - name: Build
         run: cabal v2-build
