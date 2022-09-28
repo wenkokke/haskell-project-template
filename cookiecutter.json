@@ -22,11 +22,13 @@
     "installed"
   ],
   "cabal_version": "{{cookiecutter.cabal_version_spec | resolve_cabal_version}}",
+  "__cabal_version": "{{cookiecutter.cabal_version | resolve_cabal_version}}",
   "ghc_version_spec": [
     "latest",
     "installed"
   ],
   "ghc_version": "{{cookiecutter.ghc_version_spec | resolve_ghc_version}}",
+  "__ghc_version": "{{cookiecutter.ghc_version | resolve_ghc_version}}",
   "source_directory": "src",
   "test_directory": "tests",
   "use_git_init": [

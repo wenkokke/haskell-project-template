@@ -22,11 +22,11 @@ if source_directory == test_directory:
 # Print GHC and cabal versions
 ################################################################################
 
-ghc_version = "{{cookiecutter.ghc_version}}"
+ghc_version = "{{cookiecutter.__ghc_version}}"
 
 LOGGER.info(f"Using GHC version {ghc_version}")
 
-cabal_version = "{{cookiecutter.cabal_version}}"
+cabal_version = "{{cookiecutter.__cabal_version}}"
 
 LOGGER.info(f"Using Cabal version {ghc_version}")
 

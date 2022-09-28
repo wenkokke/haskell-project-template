@@ -1,5 +1,5 @@
-{% if cookiecutter.cabal_version != 'latest' -%}
-cabal-version: {{cookiecutter.cabal_version | major_minor}}
+{% if cookiecutter.__cabal_version != 'latest' -%}
+cabal-version: {{cookiecutter.__cabal_version | major_minor}}
 {%- endif %}
 
 name:        {{cookiecutter.project_slug}}
@@ -15,9 +15,9 @@ build-type:  Simple
 extra-source-files:
     README.md
     ChangeLog.md
-{% if cookiecutter.ghc_version != 'latest' -%}
+{% if cookiecutter.__ghc_version != 'latest' -%}
 tested-with:
-    GHC == {{cookiecutter.ghc_version}}
+    GHC == {{cookiecutter.__ghc_version}}
 {%- endif %}
 
 source-repository head
