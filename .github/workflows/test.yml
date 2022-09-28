@@ -6,9 +6,11 @@ jobs:
   test:
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         ghc-version: ["9.2.4"]
         cabal-version: ["3.6.2.0"]
-    runs-on: ubuntu-latest
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: haskell/actions/setup@v2
