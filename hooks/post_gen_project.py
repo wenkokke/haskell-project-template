@@ -13,7 +13,7 @@ if __name__ == "__main__":
         shutil.rmtree(os.path.join(PROJECT_ROOT, "{{cookiecutter.test_directory}}"))
 
     # Initialize a git repository with a github remote if 'use_git' is 'github':
-    if "{{ cookiecutter.git_init }}" == "github":
+    if "{{ cookiecutter.use_git_init }}" == "github":
         github_remote_url = "{{cookiecutter.__github_remote_url}}"
         subprocess.check_call(f"git init", cwd=PROJECT_ROOT, shell=True)
         subprocess.check_call(

@@ -16,7 +16,7 @@ repos:
         exclude: ^{{cookiecutter\.project_slug}}
       - id: pretty-format-json
         exclude: ^{{cookiecutter\.project_slug}}
-        args: ["--autofix"]
+        args: ["--autofix", "--no-sort-keys"]
       - id: destroyed-symlinks
       - id: detect-aws-credentials
         args: [--allow-missing-credentials]

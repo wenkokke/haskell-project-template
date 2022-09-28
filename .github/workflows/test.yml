@@ -39,7 +39,10 @@ jobs:
           pip install -r requirements-ci.txt
 
       - name: Create project from template
-        run: cookiecutter --no-input -o ${{ runner.temp }} . git_init=n github=${{ github.actor }} project_slug=haskell-boilerplate ghc_version=${{ matrix.ghc-version }} cabal_version=${{ matrix.cabal-version }}
+        run: cookiecutter --no-input -o ${{ runner.temp }} . use_git_init=n github=${{ github.actor }} project_slug=haskell-boilerplate ghc_version="${{ env.GHC_VERSION }}" cabal_version="${{ env.CABAL_VERSION }}"
+        env:
+          GHC_VERSION: ${{ matrix.ghc-version }}
+          CABAL_VERSION: ${{ matrix.cabal-version }}
 
       - name: Setup Haskell
         uses: haskell/actions/setup@v2
