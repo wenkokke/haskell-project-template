@@ -21,7 +21,7 @@ jobs:
           ghc-version: ${{ matrix.ghc-version }}
           cabal-version: ${{ matrix.cabal-version }}
       - run: |
-          pipx run cookiecutter --no-input -o ${{ env.RUNNER_TEMP }} .
+          pipx run cookiecutter --no-input -o ${{ runner.temp }} .
       - run: |
-          cd ${{ env.RUNNER_TEMP }}/haskell-boilerplate
+          cd ${{ runner.temp }}/haskell-boilerplate
           cabal v2-test
