@@ -54,6 +54,6 @@ jobs:
 
       - name: Test project
         run: |
-          cd ${{ runner.temp }}/haskell-boilerplate
           cabal v2-update
           cabal v2-test
+        working-directory: ${{ runner.temp }}/haskell-boilerplate
