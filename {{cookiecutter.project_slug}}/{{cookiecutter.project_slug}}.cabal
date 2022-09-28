@@ -7,9 +7,9 @@ version:     {{cookiecutter.version}}
 description: Please see the README on GitHub at <https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}#readme>
 homepage:    https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}#readme
 bug-reports: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
-author:      {{cookiecutter.author_name}}
-maintainer:  {{cookiecutter.author_email}}}
-copyright:   © {{cookiecutter.year}}-{{cookiecutter.year}} {{cookiecutter.author_name}}
+author:      {{cookiecutter.fullname}}
+maintainer:  {{cookiecutter.email}}}
+copyright:   © {{cookiecutter.year}}-{{cookiecutter.year}} {{cookiecutter.fullname}}
 license:     {{cookiecutter.license}}
 build-type:  Simple
 extra-source-files:
