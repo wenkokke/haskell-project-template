@@ -3,12 +3,26 @@ import json
 import logging
 import os
 import re
-import requests
+import typing
+import requests  # type: ignore
 
 LOGGER = logging.getLogger(__name__)
 
 
 class HaskellVersions:
+
+    REGEX_SEMVER = re.compile(
+        r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
+    )
+
+    VERSIONS_JSON_URL = (
+        "https://raw.githubusercontent.com/haskell/actions/main/setup/src/versions.json"
+    )
+
+    VERSIONS_JSON_FILE = os.path.join(
+        os.path.dirname(__file__), os.path.pardir, "versions.json"
+    )
+
     def __init__(self):
         self._versions = None
 
@@ -21,20 +35,8 @@ class HaskellVersions:
             return "YYYY.MM[.INC0]"
         raise ValueError(f"Unknown version style {version_style}")
 
-    REGEX_SEMVER = re.compile(
-        r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
-    )
-
     def is_semver(self, version: str) -> bool:
         return bool(self.__class__.REGEX_SEMVER.match(version))
-
-    VERSIONS_JSON_URL = (
-        "https://raw.githubusercontent.com/haskell/actions/main/setup/src/versions.json"
-    )
-
-    VERSIONS_JSON_FILE = os.path.join(
-        os.path.dirname(__file__), os.path.pardir, "versions.json"
-    )
 
     # Filters on version numbers
 
@@ -65,14 +67,14 @@ class HaskellVersions:
             return cabal_version
 
     @property
-    def latest_cabal_version(self):
+    def latest_cabal_version(self) -> str:
         if self.cabal_versions:
             return self.cabal_versions[0]
         else:
             return "latest"
 
     @property
-    def cabal_versions(self):
+    def cabal_versions(self) -> list[str]:
         return self.versions["cabal"]
 
     # GHC versions
@@ -96,37 +98,39 @@ class HaskellVersions:
             return ghc_version
 
     @property
-    def latest_ghc_version(self):
+    def latest_ghc_version(self) -> str:
         if self.ghc_versions:
             return self.ghc_versions[0]
         else:
             return "latest"
 
     @property
-    def ghc_versions(self):
+    def ghc_versions(self) -> list[str]:
         return self.versions["ghc"]
 
     @property
-    def versions(self):
+    def versions(self) -> dict[str, list[str]]:
         if not hasattr(self, "_versions"):
             if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
                 self._versions = self._get_versions_from_file()
             else:
                 self._versions = self._get_versions_from_url()
-                with open(self.__class__.VERSIONS_JSON_FILE, "wb") as fp:
+                with open(self.__class__.VERSIONS_JSON_FILE, "w") as fp:
                     json.dump(self._versions, fp)
         return self._versions
 
-    def _get_versions_from_file(self):
+    def _get_versions_from_file(self) -> dict[str, list[str]]:
         if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
             try:
                 with open(self.__class__.VERSIONS_JSON_FILE, "rb") as fp:
                     return json.load(fp)
             except (json.JSONDecodeError,) as e:
                 LOGGER.warning(f"Could not load versions from file: {e}")
-        return collections.defaultdict(default_factory=list)
+        return typing.cast(
+            dict[str, list[str]], collections.defaultdict(default_factory=list)
+        )
 
-    def _get_versions_from_url(self):
+    def _get_versions_from_url(self) -> dict[str, list[str]]:
         try:
             response = requests.get(self.__class__.VERSIONS_JSON_URL)
             response.raise_for_status()
@@ -136,7 +140,9 @@ class HaskellVersions:
             requests.exceptions.JSONDecodeError,
         ) as e:
             LOGGER.warning(f"Could not load versions from URL: {e}")
-            return collections.defaultdict(default_factory=list)
+            return typing.cast(
+                dict[str, list[str]], collections.defaultdict(default_factory=list)
+            )
 
 
 class HaskellStrCase:
@@ -156,7 +162,7 @@ class HaskellStrCase:
 
 
 try:
-    import jinja2.ext
+    import jinja2.ext  # type: ignore
 
     class HaskellExtension(jinja2.ext.Extension, HaskellVersions, HaskellStrCase):
         def __init__(self, environment):
@@ -165,15 +171,11 @@ try:
             environment.filters["version_pattern"] = self.version_pattern
             environment.filters["major_minor"] = self.major_minor
             environment.filters["major_minor_patch"] = self.major_minor_patch
-            environment.filters[
-                "resolve_cabal_version"
-            ] = self.resolve_cabal_version
+            environment.filters["resolve_cabal_version"] = self.resolve_cabal_version
             environment.filters[
                 "resolve_latest_cabal_version"
             ] = self.resolve_latest_cabal_version
-            environment.filters[
-                "resolve_ghc_version"
-            ] = self.resolve_ghc_version
+            environment.filters["resolve_ghc_version"] = self.resolve_ghc_version
             environment.filters[
                 "resolve_latest_ghc_version"
             ] = self.resolve_latest_ghc_version
