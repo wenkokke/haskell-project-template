@@ -93,12 +93,12 @@ class HaskellVersionExtension:
             return self.installed_ghc_version
         elif ghc_version in self.ghc_versions:
             return ghc_version
-        elif self.is_semver(ghc_version):
+        else:
             for ghc_version_candidate in self.ghc_versions:
                 if ghc_version_candidate.startswith(f"{ghc_version}."):
                     return ghc_version_candidate
-        LOGGER.warning(f"Unknown GHC version '{ghc_version}', {self.ghc_versions}")
-        return ghc_version
+            LOGGER.warning(f"Unknown GHC version '{ghc_version}', {self.ghc_versions}")
+            return ghc_version
 
     @property
     def installed_ghc_version(self) -> str:
