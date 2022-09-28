@@ -2,6 +2,10 @@ name: Test
 
 on: [push, pull_request]
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     strategy:
@@ -21,22 +25,29 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
           cache-dependency-path: "requirements-ci.txt"
-      - run: |
+
+      - name: Setup Python dependencies
+        run: |
           pip install --upgrade pip
           pip install -r requirements-ci.txt
-      - uses: haskell/actions/setup@v2
+
+      - name: Create project from template
+        run: cookiecutter --no-input -o ${{ runner.temp }} . git_init=n github=${{ github.actor }} project_slug=haskell-boilerplate ghc_version=${{ matrix.ghc-version }} cabal_version=${{ matrix.cabal-version }}
+
+      - name: Setup Haskell
+        uses: haskell/actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc-version }}
           cabal-version: ${{ matrix.cabal-version }}
-      - run: |
-          cookiecutter --no-input -o ${{ runner.temp }} . git_init=n github=${{ github.actor }} project_slug=haskell-boilerplate ghc_version=${{ matrix.ghc-version }} cabal_version=${{ matrix.cabal-version }}
-        shell: bash
-      - run: |
+
+      - name: Test project
+        run: |
           cd ${{ runner.temp }}/haskell-boilerplate
           cabal v2-test
-        shell: bash
