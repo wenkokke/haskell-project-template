@@ -46,6 +46,6 @@ try:
     email = "{{cookiecutter.email}}"
     git_email = subprocess.getoutput("git config --get user.email")
     if email != git_email:
-        LOGGER.warn(f"'{email}' does not match git config: '{git_email}'\n")
+        LOGGER.warn(f"'{email}' does not match git config: '{git_email}'")
 except subprocess.CalledProcessError as e:
     LOGGER.warn(f"Could not check git config: {e}")
