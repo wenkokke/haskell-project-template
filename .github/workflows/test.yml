@@ -17,7 +17,7 @@ jobs:
             python-version: "3.8"
           - os: ubuntu-latest
             python-version: "3.9"
-    name: Test on ${{ matrix.os }}
+    name: Test on ${{ matrix.os }} with GHC-${{ matrix.ghc-version }} and Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
