@@ -9,6 +9,9 @@ LOGGER = logging.getLogger(__name__)
 
 
 class HaskellVersions:
+    def __init__(self):
+        self._versions = None
+
     REGEX_SEMVER = re.compile(
         r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
     )
@@ -113,6 +116,8 @@ try:
     class HaskellExtension(jinja2.ext.Extension, HaskellVersions, HaskellStrCase):
         def __init__(self, environment):
             super(HaskellExtension, self).__init__(environment)
+            super(HaskellVersions, self).__init__()
+            super(HaskellStrCase, self).__init__()
             environment.filters["to_pascal"] = self.to_pascal
             environment.filters[
                 "resolve_latest_cabal_version"
