@@ -50,7 +50,7 @@ jobs:
             use_git_init=n \
             ghc_version="${{ env.GHC_VERSION }}" \
             cabal_version="${{ env.CABAL_VERSION }}" \
-            use_pre_commit=y \
+            use_pre_commit=n \
             use_test=y
         env:
           GHC_VERSION: ${{ matrix.ghc-version }}
