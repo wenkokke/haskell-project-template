@@ -16,8 +16,10 @@ repos:
         exclude: ^{{cookiecutter\.project_slug}}
       - id: pretty-format-json
         exclude: ^{{cookiecutter\.project_slug}}
+        args: ["--autofix"]
       - id: destroyed-symlinks
       - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
       - id: detect-private-key
       - id: fix-byte-order-marker
       - id: requirements-txt-fixer
@@ -41,4 +43,4 @@ repos:
     hooks:
       - id: mypy
         exclude: ^{{cookiecutter\.project_slug}}
-        additional_dependencies: [cookiecutter,jinja2,types-requests]
+        additional_dependencies: [cookiecutter, jinja2, types-requests]

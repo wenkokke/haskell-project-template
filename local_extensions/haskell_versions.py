@@ -1,17 +1,17 @@
 import collections
-import jinja2.ext  # type: ignore
 import json
 import logging
 import os
-import requests  # type: ignore
 import subprocess
 import typing
+
+import jinja2.ext  # type: ignore
+import requests  # type: ignore
 
 LOGGER = logging.getLogger(__name__)
 
 
 # TODO: use <https://github.com/haskell/ghcup-metadata.git> to resolve "latest" and "recommended" versions
-
 
 
 class HaskellVersionsExtension(jinja2.ext.Extension):

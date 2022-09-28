@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import subprocess
 import logging
+import subprocess
 import sys
 
 LOGGER = logging.getLogger(__name__)

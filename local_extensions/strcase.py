@@ -1,5 +1,6 @@
-import jinja2.ext  # type: ignore
 import re
+
+import jinja2.ext  # type: ignore
 
 
 class StrCaseExtension(jinja2.ext.Extension):

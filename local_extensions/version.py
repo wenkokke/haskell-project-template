@@ -1,5 +1,6 @@
-import jinja2.ext  # type: ignore
 import re
+
+import jinja2.ext  # type: ignore
 
 
 class VersionExtension(jinja2.ext.Extension):

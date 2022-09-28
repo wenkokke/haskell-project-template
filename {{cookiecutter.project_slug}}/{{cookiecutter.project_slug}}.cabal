@@ -1,6 +1,6 @@
-{% if cookiecutter.cabal_version != 'latest' %}
+{% if cookiecutter.cabal_version != 'latest' -%}
 cabal-version: {{cookiecutter.cabal_version | major_minor}}
-{% endif %}
+{%- endif %}
 
 name:        {{cookiecutter.project_slug}}
 version:     {{cookiecutter.version}}
@@ -15,10 +15,10 @@ build-type:  Simple
 extra-source-files:
     README.md
     ChangeLog.md
+{% if cookiecutter.ghc_version != 'latest' -%}
 tested-with:
-{% if cookiecutter.ghc_version != 'latest' %}
     GHC == {{cookiecutter.ghc_version}}
-{% endif %}
+{%- endif %}
 
 source-repository head
   type: git
@@ -31,12 +31,12 @@ library
   ghc-options:          -Wall
   default-language:     Haskell2010
 
-{% if cookiecutter.use_test %}
-test {{cookiecutter.project_slug}}-test
+{% if cookiecutter.use_test -%}
+test-suite {{cookiecutter.project_slug}}-test
   type:                 exitcode-stdio-1.0
   main-is:              Spec.hs
   hs-source-dirs:       {{cookiecutter.test_directory}}
   build-depends:        base
   ghc-options:          -Wall
   default-language:     Haskell2010
-{% endif %}
+{%- endif %}

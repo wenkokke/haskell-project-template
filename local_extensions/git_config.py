@@ -1,6 +1,7 @@
-import jinja2.ext  # type: ignore
 import subprocess
 import typing
+
+import jinja2.ext  # type: ignore
 
 
 class GitConfigExtension(jinja2.ext.Extension):
