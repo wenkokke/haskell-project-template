@@ -31,7 +31,7 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
 
     # Cabal versions
 
-    def resolve_cabal_version(self, cabal_version: "str") -> str:
+    def resolve_cabal_version(self, cabal_version: "str"): # -> str
         if cabal_version == "latest":
             return self.latest_cabal_version
         elif cabal_version == "installed":
@@ -48,26 +48,26 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             return cabal_version
 
     @property
-    def installed_cabal_version(self) -> str:
+    def installed_cabal_version(self): # -> str
         try:
             return subprocess.getoutput("cabal --numeric-version")
         except subprocess.CalledProcessError as e:
             raise ValueError(f"Could not find installed version of Cabal, {e}")
 
     @property
-    def latest_cabal_version(self) -> str:
+    def latest_cabal_version(self): # -> str
         if self.cabal_versions:
             return self.cabal_versions[0]
         else:
             return "latest"
 
     @property
-    def cabal_versions(self) -> list[str]:
+    def cabal_versions(self): # -> list[str]
         return self.versions["cabal"]
 
     # GHC versions
 
-    def resolve_ghc_version(self, ghc_version: "str") -> str:
+    def resolve_ghc_version(self, ghc_version: "str"): # -> str
         if ghc_version == "latest":
             return self.latest_ghc_version
         elif ghc_version == "installed":
@@ -82,14 +82,14 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             return ghc_version
 
     @property
-    def installed_ghc_version(self) -> str:
+    def installed_ghc_version(self): # -> str
         try:
             return subprocess.getoutput("ghc --numeric-version")
         except subprocess.CalledProcessError as e:
             raise ValueError(f"Could not find installed version of GHC, {e}")
 
     @property
-    def latest_ghc_version(self) -> str:
+    def latest_ghc_version(self): # -> str
         if self.ghc_versions:
             return self.ghc_versions[0]
         else:
