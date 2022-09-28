@@ -3,10 +3,13 @@ import json
 import logging
 import os
 import re
-import typing
 import requests  # type: ignore
+import subprocess
+import typing
 
 LOGGER = logging.getLogger(__name__)
+
+# TODO: use <https://github.com/haskell/ghcup-metadata.git> to resolve "latest" and "recommended" versions
 
 
 class HaskellVersions:
@@ -51,20 +54,23 @@ class HaskellVersions:
     def resolve_cabal_version(self, cabal_version: str) -> str:
         if cabal_version == "latest":
             return self.latest_cabal_version
+        elif cabal_version == "installed":
+            return self.installed_cabal_version
         elif cabal_version in self.cabal_versions:
             return cabal_version
         elif self.is_semver(cabal_version):
             for cabal_version_candidate in self.cabal_versions:
                 if cabal_version_candidate.startswith(f"{cabal_version}."):
                     return cabal_version_candidate
-        LOGGER.warning(f"Unknown cabal version {cabal_version}, {self.cabal_versions}")
+        LOGGER.warning(f"Unknown Cabal version {cabal_version}, {self.cabal_versions}")
         return cabal_version
 
-    def resolve_latest_cabal_version(self, cabal_version: str) -> str:
-        if cabal_version == "latest":
-            return self.latest_cabal_version
-        else:
-            return cabal_version
+    @property
+    def installed_cabal_version(self) -> str:
+        try:
+            return subprocess.getoutput("cabal --numeric-version")
+        except subprocess.CalledProcessError as e:
+            raise ValueError(f"Could not find installed version of Cabal, {e}")
 
     @property
     def latest_cabal_version(self) -> str:
@@ -82,6 +88,8 @@ class HaskellVersions:
     def resolve_ghc_version(self, ghc_version: str) -> str:
         if ghc_version == "latest":
             return self.latest_ghc_version
+        elif ghc_version == "installed":
+            return self.installed_ghc_version
         elif ghc_version in self.ghc_versions:
             return ghc_version
         elif self.is_semver(ghc_version):
@@ -91,11 +99,12 @@ class HaskellVersions:
         LOGGER.warning(f"Unknown GHC version '{ghc_version}', {self.ghc_versions}")
         return ghc_version
 
-    def resolve_latest_ghc_version(self, ghc_version: str) -> str:
-        if ghc_version == "latest":
-            return self.latest_ghc_version
-        else:
-            return ghc_version
+    @property
+    def installed_ghc_version(self) -> str:
+        try:
+            return subprocess.getoutput("ghc --numeric-version")
+        except subprocess.CalledProcessError as e:
+            raise ValueError(f"Could not find installed version of GHC, {e}")
 
     @property
     def latest_ghc_version(self) -> str:

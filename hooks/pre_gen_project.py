@@ -20,6 +20,18 @@ if source_directory == test_directory:
     exit(1)
 
 ################################################################################
+# Print GHC and cabal versions
+################################################################################
+
+ghc_version = "{{cookiecutter.__resolved_ghc_version}}"
+
+LOGGER.info(f"Using GHC version {ghc_version}")
+
+cabal_version = "{{cookiecutter.__resolved_cabal_version}}"
+
+LOGGER.info(f"Using Cabal version {ghc_version}")
+
+################################################################################
 # Check that fullname and email match git config
 ################################################################################
 
@@ -27,9 +39,7 @@ try:
     fullname = "{{cookiecutter.fullname}}"
     git_fullname = subprocess.getoutput("git config --get user.name")
     if fullname != git_fullname:
-        sys.stderr.write(
-            f"WARNING: '{fullname}' does not match git config: '{git_fullname}'\n"
-        )
+        LOGGER.warning(f"'{fullname}' does not match git config: '{git_fullname}'")
 except subprocess.CalledProcessError as e:
     LOGGER.warning(f"Could not check git config: {e}")
 
@@ -37,8 +47,6 @@ try:
     email = "{{cookiecutter.email}}"
     git_email = subprocess.getoutput("git config --get user.email")
     if email != git_email:
-        sys.stderr.write(
-            f"WARNING: '{email}' does not match git config: '{git_email}'\n"
-        )
+        LOGGER.warning(f"'{email}' does not match git config: '{git_email}'\n")
 except subprocess.CalledProcessError as e:
     LOGGER.warning(f"Could not check git config: {e}")
