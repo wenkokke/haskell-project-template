@@ -15,6 +15,14 @@ jobs:
         with:
           ghc-version: ${{ matrix.ghc-version }}
           cabal-version: ${{ matrix.cabal-version }}
-      - run: pipx cookiecutter --no-input --output-dir ${{ env.RUNNER_TEMP }} . ghc_version=${{ matrix.ghc-version }} cabal_version=${{ matrix.cabal-version }}
-      - run: cd ${{ env.RUNNER_TEMP }}/haskell-boilerplate && cabal v2-test
-      
+      - run: |
+          pipx run \
+            cookiecutter \
+              --no-input \
+              --output-dir ${{ env.RUNNER_TEMP }} \
+              . \
+              ghc_version=${{ matrix.ghc-version }} \
+              cabal_version=${{ matrix.cabal-version }}
+      - run: |
+          cd ${{ env.RUNNER_TEMP }}/haskell-boilerplate
+          cabal v2-test
