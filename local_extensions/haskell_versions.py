@@ -101,7 +101,7 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
 
     @property
     def versions(self) -> dict[str, list[str]]:
-        if not hasattr(self, "_versions"):
+        if not hasattr(self, "_versions") or self._versions is None:
             if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
                 self._versions = self._get_versions_from_file()
             else:
