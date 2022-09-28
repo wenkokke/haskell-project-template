@@ -9,6 +9,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         ghc-version: ["9.2.4"]
         cabal-version: ["3.6.2.0"]
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
@@ -17,12 +18,20 @@ jobs:
       project_slug: haskell-boilerplate
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          cache-dependency-path: "requirements-ci.txt"
+      - run: |
+          pip install --upgrade pip
+          pip install -r requirements-ci.txt
       - uses: haskell/actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc-version }}
           cabal-version: ${{ matrix.cabal-version }}
       - run: |
-          pipx run cookiecutter --no-input -o ${{ runner.temp }} .
+          cookiecutter --no-input -o ${{ runner.temp }} .
       - run: |
           cd ${{ runner.temp }}/haskell-boilerplate
           cabal v2-test
