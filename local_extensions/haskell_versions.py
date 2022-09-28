@@ -31,7 +31,7 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
 
     # Cabal versions
 
-    def resolve_cabal_version(self, cabal_version: "str"): # -> str
+    def resolve_cabal_version(self, cabal_version: str) -> str:
         if cabal_version == "latest":
             return self.latest_cabal_version
         elif cabal_version == "installed":
@@ -48,26 +48,26 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             return cabal_version
 
     @property
-    def installed_cabal_version(self): # -> str
+    def installed_cabal_version(self) -> str:
         try:
             return subprocess.getoutput("cabal --numeric-version")
         except subprocess.CalledProcessError as e:
             raise ValueError(f"Could not find installed version of Cabal, {e}")
 
     @property
-    def latest_cabal_version(self): # -> str
+    def latest_cabal_version(self) -> str:
         if self.cabal_versions:
             return self.cabal_versions[0]
         else:
             return "latest"
 
     @property
-    def cabal_versions(self): # -> list[str]
-        return self.versions["cabal"]
+    def cabal_versions(self) -> typing.List[str]:
+        return self.versions.get("cabal", [])
 
     # GHC versions
 
-    def resolve_ghc_version(self, ghc_version: "str"): # -> str
+    def resolve_ghc_version(self, ghc_version: str) -> str:
         if ghc_version == "latest":
             return self.latest_ghc_version
         elif ghc_version == "installed":
@@ -82,25 +82,25 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             return ghc_version
 
     @property
-    def installed_ghc_version(self): # -> str
+    def installed_ghc_version(self) -> str:
         try:
             return subprocess.getoutput("ghc --numeric-version")
         except subprocess.CalledProcessError as e:
             raise ValueError(f"Could not find installed version of GHC, {e}")
 
     @property
-    def latest_ghc_version(self): # -> str
+    def latest_ghc_version(self) -> str:
         if self.ghc_versions:
             return self.ghc_versions[0]
         else:
             return "latest"
 
     @property
-    def ghc_versions(self): # -> list[str]
-        return self.versions["ghc"]
+    def ghc_versions(self) -> typing.List[str]:
+        return self.versions.get("ghc", [])
 
     @property
-    def versions(self): # -> dict[str, list[str]]
+    def versions(self) -> typing.Dict[str, typing.List[str]]:
         if not hasattr(self, "_versions") or self._versions is None:
             if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
                 self._versions = self._get_versions_from_file()
@@ -110,16 +110,16 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
                     json.dump(self._versions, fp)
         return self._versions
 
-    def _get_versions_from_file(self): # -> dict[str, list[str]]
+    def _get_versions_from_file(self) -> typing.Dict[str, typing.List[str]]:
         if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
             try:
                 with open(self.__class__.VERSIONS_JSON_FILE, "rb") as fp:
                     return json.load(fp)
             except (json.JSONDecodeError,) as e:
                 LOGGER.warning(f"Could not load versions from file: {e}")
-        return collections.defaultdict(default_factory=list)
+        return {}
 
-    def _get_versions_from_url(self): # -> dict[str, list[str]]
+    def _get_versions_from_url(self) -> typing.Dict[str, typing.List[str]]:
         try:
             response = requests.get(self.__class__.VERSIONS_JSON_URL)
             response.raise_for_status()
@@ -129,4 +129,4 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             requests.exceptions.JSONDecodeError,
         ) as e:
             LOGGER.warning(f"Could not load versions from URL: {e}")
-            return collections.defaultdict(default_factory=list)
+            return {}

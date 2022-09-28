@@ -12,8 +12,8 @@ class StrCaseExtension(jinja2.ext.Extension):
 
     def to_pascal(
         self,
-        text: "str",
-    ): # -> str
+        text: str,
+    ) -> str:
         return "".join(
             [
                 chunk.capitalize()
