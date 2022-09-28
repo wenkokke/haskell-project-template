@@ -17,9 +17,6 @@ jobs:
 
     name: Test on ${{ matrix.os }} with GHC ${{ matrix.ghc-version }} and Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
-    env:
-      GHC_VERSION: ${{ matrix.ghc-version }}
-      CABAL_VERSION: ${{ matrix.cabal-version }}
     steps:
       - uses: actions/checkout@v3
 
@@ -44,8 +41,8 @@ jobs:
             email="wenkokke@users.noreply.github.com" \
             github="wenkokke" \
             use_git_init=n \
-            ghc_version="${{ env.GHC_VERSION }}" \
-            cabal_version="${{ env.CABAL_VERSION }}" \
+            ghc_version="${{ matrix.ghc-version }}" \
+            cabal_version="${{ matrix.cabal-version }}" \
             use_pre_commit=n \
             use_test=y
 
