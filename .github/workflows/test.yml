@@ -2,10 +2,6 @@ name: Test
 
 on: [push, pull_request]
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   test:
     strategy:
@@ -35,7 +31,7 @@ jobs:
       - name: Create project from template
         run: |
           cookiecutter --no-input \
-            -o ${{ github.workspace }} \
+            -o .cache \
             . \
             project_name="Haskell Boilerplate" \
             project_slug=haskell-boilerplate \
@@ -57,7 +53,6 @@ jobs:
       - name: Test project
         run: |
           ls
-          cd haskell-boilerplate
           cabal v2-update
           cabal v2-test
-        working-directory: ${{ github.workspace }}
+        working-directory: .cache
