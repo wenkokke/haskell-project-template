@@ -44,7 +44,7 @@ jobs:
             project_name="Haskell Boilerplate" \
             project_slug=haskell-boilerplate \
             fullname="Wen Kokke" \
-            email="wenkokke@users.noreply.github.com"
+            email="wenkokke@users.noreply.github.com" \
             github="wenkokke" \
             use_git_init=n \
             ghc_version="${{ env.GHC_VERSION }}" \
