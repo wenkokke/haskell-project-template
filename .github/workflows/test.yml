@@ -14,6 +14,7 @@ jobs:
     env:
       ghc_version: ${{ matrix.ghc-version }}
       cabal_version: ${{ matrix.cabal-version }}
+      project_slug: haskell-boilerplate
     steps:
       - uses: actions/checkout@v3
       - uses: haskell/actions/setup@v2
