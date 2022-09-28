@@ -21,7 +21,7 @@
   ],
   "git_init": [
     "github",
-    null
+    "n"
   ],
   "github": null,
   "license": [
