@@ -39,7 +39,18 @@ jobs:
           pip install -r requirements-ci.txt
 
       - name: Create project from template
-        run: cookiecutter --no-input -o ${{ runner.temp }} . use_git_init=n github=${{ github.actor }} project_slug=haskell-boilerplate ghc_version="${{ env.GHC_VERSION }}" cabal_version="${{ env.CABAL_VERSION }}"
+        run: |
+          cookiecutter --no-input -o ${{ runner.temp }} . \
+            project_name="Haskell Boilerplate" \
+            project_slug=haskell-boilerplate \
+            fullname="Wen Kokke" \
+            email="wenkokke@users.noreply.github.com"
+            github="wenkokke" \
+            use_git_init=n \
+            ghc_version="${{ env.GHC_VERSION }}" \
+            cabal_version="${{ env.CABAL_VERSION }}" \
+            use_pre_commit=y \
+            use_test=y
         env:
           GHC_VERSION: ${{ matrix.ghc-version }}
           CABAL_VERSION: ${{ matrix.cabal-version }}
