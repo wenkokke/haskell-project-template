@@ -20,9 +20,11 @@ jobs:
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
+      github: ${{ github.actor }}
+      git_init: false
+      project_slug: haskell-boilerplate
       ghc_version: ${{ matrix.ghc-version }}
       cabal_version: ${{ matrix.cabal-version }}
-      project_slug: haskell-boilerplate
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
