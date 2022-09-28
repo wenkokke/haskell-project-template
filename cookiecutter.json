@@ -7,7 +7,7 @@
   "version_pattern": "{{cookiecutter.version_style | version_pattern}}",
   "fullname": "{{ None | resolve_fullname }}",
   "email": "{{ None | resolve_email }}",
-  "github": "wenkokke",
+  "github": null,
   "repository_slug": "{{cookiecutter.project_slug}}",
   "use_test": "y",
   "source_directory": "src",
