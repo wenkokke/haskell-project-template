@@ -5,10 +5,10 @@
   "version": "0.1.0",
   "version_style": ["SemVer", "ComVer", "CalVer"],
   "version_pattern": "{{cookiecutter.version_style | version_pattern}}",
-  "fullname": "Wen Kokke",
-  "email": "wenkokke@users.noreply.github.com",
-  "github_username": "wenkokke",
-  "github_repository": "{{cookiecutter.project_slug}}",
+  "fullname": "{{ None | resolve_fullname }}",
+  "email": "{{ None | resolve_email }}",
+  "github": "wenkokke",
+  "repository_slug": "{{cookiecutter.project_slug}}",
   "use_test": "y",
   "source_directory": "src",
   "test_directory": "tests",
@@ -20,6 +20,7 @@
   "year": "{% now 'local', '%Y' %}",
   "_extensions": [
     "jinja2_time.TimeExtension",
+    "local_extensions.GitConfigExtension",
     "local_extensions.HaskellVersionsExtension",
     "local_extensions.StrCaseExtension",
     "local_extensions.VersionExtension"
