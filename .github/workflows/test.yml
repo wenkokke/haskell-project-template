@@ -13,6 +13,8 @@ jobs:
 
     name: Test on ${{ matrix.os }} with GHC ${{ matrix.ghc-version }} and Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
+    env:
+      CACHE_DIRECTORY: .cache
     steps:
       - uses: actions/checkout@v3
 
@@ -21,15 +23,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
-          cache-dependency-path: "requirements-ci.txt"
+          cache-dependency-path: "requirements.txt"
 
       - name: Setup Python dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements-ci.txt
+          pip install -r requirements.txt
 
       - name: Create project from template
-        run: cookiecutter --no-input -o .cache . project_slug=haskell-boilerplate fullname="Wen Kokke" email="wenkokke@users.noreply.github.com" github="wenkokke" use_git_init=n ghc_version="${{ matrix.ghc-version }}" cabal_version="${{ matrix.cabal-version }}" use_pre_commit=n use_test=y
+        run: cookiecutter --no-input -o ${{ env.CACHE_DIRECTORY }} . project_slug=haskell-boilerplate fullname="Wen Kokke" email="wenkokke@users.noreply.github.com" github="wenkokke" use_git_init=n ghc_version="${{ matrix.ghc-version }}" cabal_version="${{ matrix.cabal-version }}" use_pre_commit=n use_test=y
 
       - name: Setup Haskell
         uses: haskell/actions/setup@v2
@@ -41,4 +43,4 @@ jobs:
         run: |
           cabal v2-update
           cabal v2-test
-        working-directory: .cache/haskell-boilerplate
+        working-directory: ${{ env.CACHE_DIRECTORY }}/haskell-boilerplate
