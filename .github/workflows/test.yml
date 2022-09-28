@@ -11,6 +11,9 @@ jobs:
         cabal-version: ["3.6.2.0"]
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    env:
+      ghc_version: ${{ matrix.ghc-version }}
+      cabal_version: ${{ matrix.cabal-version }}
     steps:
       - uses: actions/checkout@v3
       - uses: haskell/actions/setup@v2
@@ -18,13 +21,7 @@ jobs:
           ghc-version: ${{ matrix.ghc-version }}
           cabal-version: ${{ matrix.cabal-version }}
       - run: |
-          pipx run \
-            cookiecutter \
-              --no-input \
-              --output-dir ${{ env.RUNNER_TEMP }} \
-              . \
-              ghc_version=${{ matrix.ghc-version }} \
-              cabal_version=${{ matrix.cabal-version }}
+          pipx run cookiecutter --no-input -o ${{ env.RUNNER_TEMP }} .
       - run: |
           cd ${{ env.RUNNER_TEMP }}/haskell-boilerplate
           cabal v2-test
