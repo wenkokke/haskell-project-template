@@ -12,22 +12,11 @@ LOGGER = logging.getLogger(__name__)
 # TODO: use <https://github.com/haskell/ghcup-metadata.git> to resolve "latest" and "recommended" versions
 
 
-class HaskellVersions:
+class BumpverExtension:
 
     REGEX_SEMVER = re.compile(
         r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
     )
-
-    VERSIONS_JSON_URL = (
-        "https://raw.githubusercontent.com/haskell/actions/main/setup/src/versions.json"
-    )
-
-    VERSIONS_JSON_FILE = os.path.join(
-        os.path.dirname(__file__), os.path.pardir, "versions.json"
-    )
-
-    def __init__(self):
-        self._versions = None
 
     def version_pattern(self, version_style: str) -> str:
         if version_style == "SemVer":
@@ -41,13 +30,25 @@ class HaskellVersions:
     def is_semver(self, version: str) -> bool:
         return bool(self.__class__.REGEX_SEMVER.match(version))
 
-    # Filters on version numbers
-
     def major_minor(self, version: str) -> str:
         return ".".join(version.split(".")[:2])
 
     def major_minor_patch(self, version: str) -> str:
         return ".".join(version.split(".")[:3])
+
+
+class HaskellVersionExtension:
+
+    VERSIONS_JSON_URL = (
+        "https://raw.githubusercontent.com/haskell/actions/main/setup/src/versions.json"
+    )
+
+    VERSIONS_JSON_FILE = os.path.join(
+        os.path.dirname(__file__), os.path.pardir, "versions.json"
+    )
+
+    def __init__(self):
+        self._versions = None
 
     # Cabal versions
 
@@ -154,7 +155,7 @@ class HaskellVersions:
             )
 
 
-class HaskellStrCase:
+class StrCaseExtension:
 
     REGEX_DELIMITER = re.compile(r"[-_.:/](?!\s)+")
 
@@ -173,21 +174,23 @@ class HaskellStrCase:
 try:
     import jinja2.ext  # type: ignore
 
-    class HaskellExtension(jinja2.ext.Extension, HaskellVersions, HaskellStrCase):
+    class LocalExtensions(
+        jinja2.ext.Extension,
+        BumpverExtension,
+        HaskellVersionExtension,
+        StrCaseExtension,
+    ):
         def __init__(self, environment):
-            super(HaskellExtension, self).__init__(environment)
-            environment.filters["to_pascal"] = self.to_pascal
+            super(jinja2.ext.Extension, self).__init__(environment)
+            # BumpverExtension
             environment.filters["version_pattern"] = self.version_pattern
             environment.filters["major_minor"] = self.major_minor
             environment.filters["major_minor_patch"] = self.major_minor_patch
+            # HaskellVersionExtension
             environment.filters["resolve_cabal_version"] = self.resolve_cabal_version
-            environment.filters[
-                "resolve_latest_cabal_version"
-            ] = self.resolve_latest_cabal_version
             environment.filters["resolve_ghc_version"] = self.resolve_ghc_version
-            environment.filters[
-                "resolve_latest_ghc_version"
-            ] = self.resolve_latest_ghc_version
+            # StrCaseExtension
+            environment.filters["to_pascal"] = self.to_pascal
 
 except ModuleNotFoundError as e:
     pass
