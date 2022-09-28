@@ -31,7 +31,7 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
 
     # Cabal versions
 
-    def resolve_cabal_version(self, cabal_version: str) -> str:
+    def resolve_cabal_version(self, cabal_version: "str") -> str:
         if cabal_version == "latest":
             return self.latest_cabal_version
         elif cabal_version == "installed":
@@ -67,7 +67,7 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
 
     # GHC versions
 
-    def resolve_ghc_version(self, ghc_version: str) -> str:
+    def resolve_ghc_version(self, ghc_version: "str") -> str:
         if ghc_version == "latest":
             return self.latest_ghc_version
         elif ghc_version == "installed":
@@ -96,11 +96,11 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             return "latest"
 
     @property
-    def ghc_versions(self) -> list[str]:
+    def ghc_versions(self): # -> list[str]
         return self.versions["ghc"]
 
     @property
-    def versions(self) -> dict[str, list[str]]:
+    def versions(self): # -> dict[str, list[str]]
         if not hasattr(self, "_versions") or self._versions is None:
             if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
                 self._versions = self._get_versions_from_file()
@@ -110,18 +110,16 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
                     json.dump(self._versions, fp)
         return self._versions
 
-    def _get_versions_from_file(self) -> dict[str, list[str]]:
+    def _get_versions_from_file(self): # -> dict[str, list[str]]
         if os.path.exists(self.__class__.VERSIONS_JSON_FILE):
             try:
                 with open(self.__class__.VERSIONS_JSON_FILE, "rb") as fp:
                     return json.load(fp)
             except (json.JSONDecodeError,) as e:
                 LOGGER.warning(f"Could not load versions from file: {e}")
-        return typing.cast(
-            dict[str, list[str]], collections.defaultdict(default_factory=list)
-        )
+        return collections.defaultdict(default_factory=list)
 
-    def _get_versions_from_url(self) -> dict[str, list[str]]:
+    def _get_versions_from_url(self): # -> dict[str, list[str]]
         try:
             response = requests.get(self.__class__.VERSIONS_JSON_URL)
             response.raise_for_status()
@@ -131,6 +129,4 @@ class HaskellVersionsExtension(jinja2.ext.Extension):
             requests.exceptions.JSONDecodeError,
         ) as e:
             LOGGER.warning(f"Could not load versions from URL: {e}")
-            return typing.cast(
-                dict[str, list[str]], collections.defaultdict(default_factory=list)
-            )
+            return collections.defaultdict(default_factory=list)
