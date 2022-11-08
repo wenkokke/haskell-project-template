@@ -1,6 +1,6 @@
-name: CI
+name: build
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
         ghc-version: ["{{cookiecutter.__ghc_version | major_minor}}"]
         cabal-version: ["{{cookiecutter.__cabal_version | major_minor}}"]
 
-    name: Build on ${{'{{ matrix.os }}'}} with GHC-${{'{{ matrix.ghc-version }}'}}
+    name: ${{'{{ matrix.os }}'}} / GHC-${{'{{ matrix.ghc-version }}'}}
     runs-on: ${{'{{ matrix.os }}'}}
     steps:
       - name: Checkout
