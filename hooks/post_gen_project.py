@@ -10,7 +10,6 @@ PROJECT_ROOT = os.path.realpath(os.path.curdir)
 
 
 if __name__ == "__main__":
-
     use_test = "{{cookiecutter.use_test}}"
     use_git_init = "{{cookiecutter.use_git_init}}"
     use_pre_commit = "{{cookiecutter.use_pre_commit}}"
