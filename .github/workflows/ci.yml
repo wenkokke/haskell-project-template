@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - "{{cookiecutter.git_default_branch}}"
+      - "dev"
   pull_request:
     types:
       - opened
