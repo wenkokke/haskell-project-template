@@ -1,6 +1,20 @@
-name: build
+name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "{{cookiecutter.git_default_branch}}"
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  merge_group:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: sh
 
 env:
   DEFAULT_PYTHON_VERSION: "3.11"
@@ -21,18 +35,20 @@ jobs:
               version: "9.2"
           - cabal:
               version: "3.6"
+        python:
+          - version: "3.11"
 
-    name: ${{ matrix.os.name }} / GHC-${{ matrix.haskell.ghc.version }} - Python ${{ env.DEFAULT_PYTHON_VERSION }}
+    name: ${{ matrix.os.name }} / GHC ${{ matrix.haskell.ghc.version }} / Python ${{ matrix.python.version }}
     runs-on: ${{ matrix.os.type }}
     env:
-      OUTPUT_DIRECTORY: .cache
+      OUTPUT_DIRECTORY: _cache
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
+          python-version: "${{ matrix.python.version }}"
           cache: "pip"
           cache-dependency-path: "requirements.txt"
 

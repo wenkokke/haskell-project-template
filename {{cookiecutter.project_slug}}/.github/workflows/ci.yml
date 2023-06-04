@@ -18,7 +18,7 @@ defaults:
 
 jobs:
   build:
-    name: "${{'{{ matrix.os.name }}'}} / GHC-${{'{{ matrix.haskell.ghc.version }}'}}"
+    name: "${{'{{ matrix.os.name }}'}} / GHC ${{'{{ matrix.haskell.ghc.version }}'}}"
     runs-on: "${{'{{ matrix.os.type }}'}}"
 
     strategy:
