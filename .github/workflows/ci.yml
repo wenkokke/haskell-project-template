@@ -45,7 +45,7 @@ jobs:
         haskell:
           - ghc:
               version: "9.2"
-          - cabal:
+            cabal:
               version: "3.6"
         python:
           - version: "3.11"
