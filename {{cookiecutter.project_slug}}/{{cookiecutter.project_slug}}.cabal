@@ -2,15 +2,15 @@
 cabal-version: {{cookiecutter.__cabal_version | major_minor}}
 {%- endif %}
 
-name:        {{cookiecutter.project_slug}}
-version:     {{cookiecutter.version}}
-description: Please see the README on GitHub at <https://github.com/{{cookiecutter.github}}/{{cookiecutter.repository_slug}}#readme>
-homepage:    https://github.com/{{cookiecutter.github}}/{{cookiecutter.repository_slug}}#readme
-bug-reports: https://github.com/{{cookiecutter.github}}/{{cookiecutter.repository_slug}}/issues
-author:      {{cookiecutter.fullname}}
-maintainer:  {{cookiecutter.email}}}
-copyright:   © {{cookiecutter.year}}-{{cookiecutter.year}} {{cookiecutter.fullname}}
-license:     {{cookiecutter.license}}
+name:         {{cookiecutter.project_slug}}
+version:      {{cookiecutter.version}}
+description:  Please see the README on GitHub at <https://github.com/{{cookiecutter.github}}/{{cookiecutter.repository_slug}}#readme>
+homepage:     https://github.com/{{cookiecutter.github}}/{{cookiecutter.repository_slug}}#readme
+bug-reports:  https://github.com/{{cookiecutter.github}}/{{cookiecutter.repository_slug}}/issues
+author:       {{cookiecutter.fullname}}
+maintainer:   {{cookiecutter.email}}}
+copyright:    © {{cookiecutter.year}}-{{cookiecutter.year}} {{cookiecutter.fullname}}
+license-file: LICENSE
 build-type:  Simple
 extra-source-files:
     README.md

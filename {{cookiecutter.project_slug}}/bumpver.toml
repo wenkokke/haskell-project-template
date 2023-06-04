@@ -9,6 +9,6 @@ push = true
 [bumpver.file_patterns]
 "bumpver.toml" = ['^current_version = "{version}"$']
 "{{cookiecutter.project_slug}}.cabal" = [
-  '^version:     {pep440_version}',
+  '^version:      {pep440_version}',
   '^copyright:   © {{cookiecutter.year}}-YYYY {{cookiecutter.fullname}}$',
 ]
