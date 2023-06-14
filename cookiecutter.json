@@ -7,18 +7,34 @@
   "github": null,
   "repository_slug": "{{cookiecutter.project_slug}}",
   "version": "0.1.0",
-  "version_style": ["SemVer", "ComVer", "CalVer"],
+  "version_style": [
+    "SemVer",
+    "ComVer",
+    "CalVer"
+  ],
   "version_pattern": "{{cookiecutter.version_style | version_pattern}}",
-  "license": ["MIT", "PPL"],
-  "cabal_version_spec": ["latest", "installed"],
+  "license": [
+    "MIT",
+    "PPL"
+  ],
+  "cabal_version_spec": [
+    "latest",
+    "installed"
+  ],
   "cabal_version": "{{cookiecutter.cabal_version_spec | resolve_cabal_version}}",
   "__cabal_version": "{{cookiecutter.cabal_version | resolve_cabal_version}}",
-  "ghc_version_spec": ["latest", "installed"],
+  "ghc_version_spec": [
+    "latest",
+    "installed"
+  ],
   "ghc_version": "{{cookiecutter.ghc_version_spec | resolve_ghc_version}}",
   "__ghc_version": "{{cookiecutter.ghc_version | resolve_ghc_version}}",
   "source_directory": "src",
   "test_directory": "tests",
-  "use_git_init": ["github", "n"],
+  "use_git_init": [
+    "github",
+    "n"
+  ],
   "git_default_branch": "main",
   "__github_remote_url": "git@github.com:{{cookiecutter.github}}/{{cookiecutter.repository_slug}}.git",
   "use_pre_commit": "y",
