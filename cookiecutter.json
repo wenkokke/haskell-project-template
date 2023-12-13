@@ -41,7 +41,6 @@
   "use_test": "y",
   "year": "{% now 'local', '%Y' %}",
   "_extensions": [
-    "jinja2_time.TimeExtension",
     "local_extensions.GitConfigExtension",
     "local_extensions.HaskellVersionsExtension",
     "local_extensions.StrCaseExtension",
