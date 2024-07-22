@@ -39,7 +39,7 @@ repos:
       - id: black
         exclude: ^{{cookiecutter\.project_slug}}
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.10.0"
+    rev: "v1.11.0"
     hooks:
       - id: mypy
         exclude: ^{{cookiecutter\.project_slug}}
